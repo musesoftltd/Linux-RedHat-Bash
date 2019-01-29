@@ -198,7 +198,7 @@ class auditObjectAtom():
 
     def audit(self, servername, username, identityFileFullPath, password):
         print 'On Server: ' + servername + ' Auditing : ' + self.auditTitle + '...'
-        self.currentValue = getParameterValue(currentAuditReportEnvironment, servername, username, identityFileFullPath, password, self.cliVector, self.cliProperty)
+        self.currentValue = getParameterValue(currentAuditReportEnvironment, servername, username, identityFileFullPath, password, self.cliVector, self.targetValue)
         self.auditResult = self.currentValue
         print 'Target Value: ' + self.targetValue
         print 'Actual Value: ' + self.currentValue

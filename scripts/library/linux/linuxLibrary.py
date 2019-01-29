@@ -36,7 +36,7 @@ def getParameterValue(env, servername, username, idendityFileFullPath, idendityF
 
 def setParameterValue(env, servername, username, passwordOrIdFileFullPath, fileVector, grepDetail, targetValue, reloadServerIfRequired=False) : 
 
-    print 'On Server :' + servername + ' applying ->' + targetValue + '<- to file Vector Vector ->' + fileVector + '<- ...'
+    print 'On Server :' + servername + ' applying ->' + targetValue + '<- to ' + grepDetail + ' at file Vector Vector ->' + fileVector + '<- ...'
     try:
             command = "source ~/.bash_profile 2>/dev/null; sed -i -- 's/" + grepDetail + "/" + targetValue + "/g'" + fileVector + "'"
             rshCommand(env, servername, username, passwordOrIdFileFullPath, command)
@@ -46,5 +46,5 @@ def setParameterValue(env, servername, username, passwordOrIdFileFullPath, fileV
     finally:
         None
     
-    print 'On Server :' + servername + ' applying ->' + targetValue + '<- to file Vector ->' + fileVector + '<- ...end.'
+    print 'On Server :' + servername + ' applying ->' + targetValue + '<- to ' + grepDetail + ' at file Vector Vector ->' + fileVector + '<- ...end.'
     return True 
