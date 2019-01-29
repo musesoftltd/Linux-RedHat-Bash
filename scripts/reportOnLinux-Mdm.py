@@ -21,10 +21,6 @@ def completeChecksMdm(env, serverList, propertiesDict, bApplyRequiredChanges):
         auditServersMdm(env, servername, runtimeProperties["hostUsername"], propertiesDict, bApplyRequiredChanges)
     
         auditReport(env, servername)
-# 
-# appendToFile("\n", destFileName)
-# 
-# completeChecksPega('prodServersPega', prodServersPega, 'mxm366UP')
 
 bApplyRequiredChanges = False
 
