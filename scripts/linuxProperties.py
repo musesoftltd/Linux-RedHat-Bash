@@ -1,7 +1,8 @@
 linuxPropertiesDict = {
     'identityFileFullPath' : "myIndentityFileFullPath",
     'identityFilePassword' : "myIndentityFilePassword",
-    'username' : 'hostUsername',
+    'usernameMdm' : 'hostUsername',
+    'usernamePega' : 'hostUsername',
     'password' : 'hostPassword',
     
     # example property
