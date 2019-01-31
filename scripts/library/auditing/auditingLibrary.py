@@ -136,8 +136,8 @@ class auditObjectAtom():
  
     auditTitle = ""
 
-    cliVector = ""
-    cliProperty = ""
+    fileVector = ""
+    strToFind = ""
  
     currentValue = ""
     targetValue = ""
@@ -148,11 +148,11 @@ class auditObjectAtom():
     titledAlready = False
     reportedAlready = False
 
-    def __init__(self, servername, username, identityUserOrFileFullPath, password, auditTitle, cliVector, grepTarget, targetValue, bApplyTargetValue):
+    def __init__(self, servername, username, identityUserOrFileFullPath, password, auditTitle, fileVector, strToFind, targetValue, bApplyTargetValue):
         self.servername = servername
         self.auditTitle = auditTitle
-        self.cliVector = cliVector
-        self.cliProperty = str(grepTarget)
+        self.fileVector = fileVector
+        self.strToFind = str(strToFind)
         self.targetValue = str(targetValue)
 
         self.auditPassed = False
@@ -185,7 +185,7 @@ class auditObjectAtom():
 
     def applyTargetValue(self):
         print 'On Server: ' + self.servername + ' Applying : ' + self.auditTitle + '...'
-        result = setParameterValue(currentAuditReportEnvironment, self.servername, self.username, self.password, self.cliVector, self.cliProperty, self.targetValue)
+        result = setParameterValue(currentAuditReportEnvironment, self.servername, self.username, self.password, self.fileVector, self.strToFind, self.targetValue)
         if (result == True) :
             self.auditPassed = result
         else:
@@ -199,7 +199,7 @@ class auditObjectAtom():
 
     def audit(self, servername, username, identityFileFullPath, password):
         print 'On Server: ' + servername + ' Auditing : ' + self.auditTitle + '...'
-        self.currentValue = getParameterValue(currentAuditReportEnvironment, servername, username, identityFileFullPath, password, self.cliVector, self.targetValue)
+        self.currentValue = getParameterValue(currentAuditReportEnvironment, servername, username, identityFileFullPath, password, self.fileVector, self.strToFind)
         self.auditResult = self.currentValue
         print 'Target Value: ' + self.targetValue
         print 'Actual Value: ' + self.currentValue
@@ -248,8 +248,8 @@ class auditObjectAtomCompleteAnAction():
  
     auditTitle = ""
 
-    cliVector = ""
-    cliProperty = ""
+    fileVector = ""
+    strToFind = ""
  
     currentValue = ""
     targetValue = ""
@@ -279,7 +279,7 @@ class auditObjectAtomCompleteAnAction():
 
     def audit(self, servername, username, identityFileFullPath, password):
         print 'On Server: ' + servername + ' Auditing : ' + self.auditTitle + '...'
-        self.currentValue = rshCommand(currentAuditReportEnvironment, servername, username, identityFileFullPath, password, self.command)
+        self.currentValue = rshCommand(currentAuditReportEnvironment, servername, username, identityFileFullPath, password, '/bin/bash; source ~/.bash_profile;' + self.command)
         self.auditResult = self.currentValue
         print 'Actual Value: ' + self.currentValue
         # This is a hack because we use \" to set some values
