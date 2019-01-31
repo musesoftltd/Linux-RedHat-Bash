@@ -34,17 +34,17 @@ def getParameterValue(env, servername, username, idendityFileFullPath, idendityF
     
     return currentValue 
 
-def setParameterValue(env, servername, username, passwordOrIdFileFullPath, fileVector, grepDetail, targetValue, reloadServerIfRequired=False) : 
+def setParameterValue(env, servername, username, passwordOrIdFileFullPath, fileVector, strToFind, targetValue, reloadServerIfRequired=False) : 
 
-    print 'On Server :' + servername + ' applying ->' + targetValue + '<- to ' + grepDetail + ' at file Vector Vector ->' + fileVector + '<- ...'
+    print 'On Server :' + servername + ' applying ->' + targetValue + '<- to ' + strToFind + ' at file Vector Vector ->' + fileVector + '<- ...'
     try:
-            command = "source ~/.bash_profile 2>/dev/null; sed -i -- 's/" + grepDetail + "/" + targetValue + "/g'" + fileVector + "'"
+            command = "source ~/.bash_profile 2>/dev/null; sed -i -- 's/" + strToFind + "/" + targetValue + "/g'" + fileVector + "'"
             rshCommand(env, servername, username, passwordOrIdFileFullPath, command)
             
-            command = "source ~/.bash_profile 2>/dev/null; grep -ia '"+ grepDetail + "'" + " '" + fileVector + "'"
+            command = "source ~/.bash_profile 2>/dev/null; grep -ia '"+ targetValue + "'" + " '" + fileVector + "'"
             rshCommand(env, servername, username, passwordOrIdFileFullPath, command)
     finally:
         None
     
-    print 'On Server :' + servername + ' applying ->' + targetValue + '<- to ' + grepDetail + ' at file Vector Vector ->' + fileVector + '<- ...end.'
+    print 'On Server :' + servername + ' applying ->' + targetValue + '<- to ' + strToFind + ' at file Vector Vector ->' + fileVector + '<- ...end.'
     return True 
