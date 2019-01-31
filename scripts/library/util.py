@@ -3,14 +3,12 @@ Created on 14 Oct 2016
 
 @author: ...
 '''
-from StringIO import StringIO
 import errno
-from java.lang import System, StringBuilder
+from java.lang import StringBuilder
 from java.util import Properties
 import os
 import re
-from string import rsplit, split
-import sys
+from string import split
 from threading import Thread
 
 from com.jcraft.jsch import JSch
@@ -249,6 +247,8 @@ def execSshRemote(hostname, username, identityFileFullPath, identityPassword, co
     session.setConfig(config);
  
     # session.setTimeout(100)
+    
+    print 'Logging into Remote SSH Shell key Auth...'    
  
     try:
         session.connect()
@@ -256,7 +256,7 @@ def execSshRemote(hostname, username, identityFileFullPath, identityPassword, co
         return 'None'
  
     channel = session.openChannel("exec")
-    channel.setCommand(_command)
+    channel.setCommand('source ~/.bash_profile 2>/dev/null; ' + _command)
  
     outputBuffer = StringBuilder();
     
@@ -309,10 +309,12 @@ def execSshRemoteUsrPwd(hostname, username, password, commandsSemiColonSeperated
     config.put("StrictHostKeyChecking", "no")
     config.put("GSSAPIAuthentication", "no")
     config.put("UnknownHostVerification", "no")
-    config.put("PreferredAuthentications", "publickey");
+    #config.put("PreferredAuthentications", "publickey");
     session.setConfig(config);
     
     # session.setTimeout(100)
+    
+    print 'Logging into Remote SSH Shell u/p Auth...'
     
     try:
         session.connect()
@@ -320,7 +322,7 @@ def execSshRemoteUsrPwd(hostname, username, password, commandsSemiColonSeperated
         return 'None'
     
     channel = session.openChannel("exec")
-    channel.setCommand(_command)
+    channel.setCommand('source ~/.bash_profile 2>/dev/null; ' + _command)
     
     outputBuffer = StringBuilder();
     

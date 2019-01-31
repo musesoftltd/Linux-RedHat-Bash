@@ -136,8 +136,8 @@ class auditObjectAtom():
  
     auditTitle = ""
 
-    cliVector = ""
-    cliProperty = ""
+    fileVector = ""
+    strToFind = ""
  
     currentValue = ""
     targetValue = ""
@@ -148,11 +148,11 @@ class auditObjectAtom():
     titledAlready = False
     reportedAlready = False
 
-    def __init__(self, servername, username, identityUserOrFileFullPath, password, auditTitle, cliVector, grepTarget, targetValue, bApplyTargetValue):
+    def __init__(self, servername, username, identityUserOrFileFullPath, password, auditTitle, fileVector, strToFind, targetValue, bApplyTargetValue):
         self.servername = servername
         self.auditTitle = auditTitle
-        self.cliVector = cliVector
-        self.cliProperty = str(grepTarget)
+        self.fileVector = fileVector
+        self.strToFind = str(strToFind)
         self.targetValue = str(targetValue)
 
         self.auditPassed = False
@@ -185,7 +185,7 @@ class auditObjectAtom():
 
     def applyTargetValue(self):
         print 'On Server: ' + self.servername + ' Applying : ' + self.auditTitle + '...'
-        result = setParameterValue(currentAuditReportEnvironment, self.servername, self.username, self.password, self.cliVector, self.cliProperty, self.targetValue)
+        result = setParameterValue(currentAuditReportEnvironment, self.servername, self.username, self.password, self.fileVector, self.strToFind, self.targetValue)
         if (result == True) :
             self.auditPassed = result
         else:
@@ -199,7 +199,7 @@ class auditObjectAtom():
 
     def audit(self, servername, username, identityFileFullPath, password):
         print 'On Server: ' + servername + ' Auditing : ' + self.auditTitle + '...'
-        self.currentValue = getParameterValue(currentAuditReportEnvironment, servername, username, identityFileFullPath, password, self.cliVector, self.targetValue)
+        self.currentValue = getParameterValue(currentAuditReportEnvironment, servername, username, identityFileFullPath, password, self.fileVector, self.strToFind)
         self.auditResult = self.currentValue
         print 'Target Value: ' + self.targetValue
         print 'Actual Value: ' + self.currentValue
@@ -248,8 +248,8 @@ class auditObjectAtomCompleteAnAction():
  
     auditTitle = ""
 
-    cliVector = ""
-    cliProperty = ""
+    fileVector = ""
+    strToFind = ""
  
     currentValue = ""
     targetValue = ""
@@ -309,7 +309,7 @@ def auditInitAudit(environment, technologyType):
 
     appendToAudit('Server, Test Result, Test' + '\n')
 
-    appendToReport('Muse,https://urldefense.proofpoint.com/v2/url?u=https-3A__sourceforge.net_projects_museproject_&d=DwIGAg&c=7HXQkpfw9RhjnklpS1w2AQ&r=XsB2ya1EgJmj_cY8EXjosQwrOHNISxyT2N7bmLSzDII&m=VydaG-Z4GOoJ2zRpJv0fbTerT1Bl2fdoinV8E8Bcszo&s=h4ehOUF8Qrv-3Crvrg9FRFNBwZ374Dwlxkk60h8hYgg&e= ' + '\n')
+    appendToReport('Muse,https://sourceforge.net/projects/museproject/' + '\n')
     appendToReport('Linux Audit' + '\n')
 
 def auditWriteAudit(server, auditText, bAuditPassed):
