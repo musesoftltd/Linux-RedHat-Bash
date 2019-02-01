@@ -29,6 +29,6 @@ bApplyRequiredChanges = False
 
 auditInitAudit("PreProd Servers", "Pega")
 
-completeChecksPega('preProdServersPega', ['127.0.1.1',], linuxPropertiesDict, bApplyRequiredChanges)
+completeChecksPega('preProdServersPega', ['127.0.0.1',], linuxPropertiesDict, bApplyRequiredChanges)
 
 exit()

@@ -279,7 +279,7 @@ class auditObjectAtomCompleteAnAction():
 
     def audit(self, servername, username, identityFileFullPath, password):
         print 'On Server: ' + servername + ' Auditing : ' + self.auditTitle + '...'
-        self.currentValue = rshCommand(currentAuditReportEnvironment, servername, username, identityFileFullPath, password, '/bin/bash; source ~/.bash_profile;' + self.command)
+        self.currentValue = rshCommand(currentAuditReportEnvironment, servername, username, identityFileFullPath, password, self.command)
         self.auditResult = self.currentValue
         print 'Actual Value: ' + self.currentValue
         # This is a hack because we use \" to set some values
@@ -309,7 +309,7 @@ def auditInitAudit(environment, technologyType):
 
     appendToAudit('Server, Test Result, Test' + '\n')
 
-    appendToReport('Muse,https://urldefense.proofpoint.com/v2/url?u=https-3A__sourceforge.net_projects_museproject_&d=DwIGAg&c=7HXQkpfw9RhjnklpS1w2AQ&r=XsB2ya1EgJmj_cY8EXjosQwrOHNISxyT2N7bmLSzDII&m=VydaG-Z4GOoJ2zRpJv0fbTerT1Bl2fdoinV8E8Bcszo&s=h4ehOUF8Qrv-3Crvrg9FRFNBwZ374Dwlxkk60h8hYgg&e= ' + '\n')
+    appendToReport('Muse,https://sourceforge.net/projects/museproject/' + '\n')
     appendToReport('Linux Audit' + '\n')
 
 def auditWriteAudit(server, auditText, bAuditPassed):
