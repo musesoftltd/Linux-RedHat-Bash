@@ -279,7 +279,7 @@ class auditObjectAtomCompleteAnAction():
 
     def audit(self, servername, username, identityFileFullPath, password):
         print 'On Server: ' + servername + ' Auditing : ' + self.auditTitle + '...'
-        self.currentValue = rshCommand(currentAuditReportEnvironment, servername, username, identityFileFullPath, password, '/bin/bash; source ~/.bash_profile;' + self.command)
+        self.currentValue = rshCommand(currentAuditReportEnvironment, servername, username, identityFileFullPath, password, self.command)
         self.auditResult = self.currentValue
         print 'Actual Value: ' + self.currentValue
         # This is a hack because we use \" to set some values
