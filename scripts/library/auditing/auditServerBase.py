@@ -11,9 +11,9 @@ def auditServersBaseAudit(environment, servername, username, propertiesDict, bAp
     # merge global propertiesDict into dict - deliberately overwriting local with global dict all values
     runtimeProperties = dict()
 #     runtimeProperties.update(globalDictionary)
-    runtimeProperties.update(propertiesDict)   
-        
-    auditObjectAtoms.append(auditObjectAtomCompleteAnAction(servername, username, runtimeProperties["identityFileFullPath"], runtimeProperties["password"], 'RedHat Release', 'cat /etc/redhat-release'))
+    runtimeProperties.update(propertiesDict)
+
+    auditObjectAtoms.append(auditObjectAtomCompleteAnAction(servername, username, runtimeProperties["identityFileFullPath"], runtimeProperties["password"], 'Linux Release', 'cat /etc/*release'))
     auditObjectAtoms.append(auditObjectAtomCompleteAnAction(servername, username, runtimeProperties["identityFileFullPath"], runtimeProperties["password"], 'NLS', 'env | grep NLS'))
     auditObjectAtoms.append(auditObjectAtomCompleteAnAction(servername, username, runtimeProperties["identityFileFullPath"], runtimeProperties["password"], 'ORACLE_HOME', 'env | grep ORACLE_HOME'))
     auditObjectAtoms.append(auditObjectAtomCompleteAnAction(servername, username, runtimeProperties["identityFileFullPath"], runtimeProperties["password"], 'NTP Stats', 'ntpstat'))
