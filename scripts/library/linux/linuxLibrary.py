@@ -11,6 +11,7 @@ def rshCommand(env, hostname, username, identityFileFullPath, password, _command
     command = _command
     
     if (String(identityFileFullPath).contains(':') or String(identityFileFullPath).contains('\\') or String(identityFileFullPath).contains('/')) :
+        print 'On Server :' + hostname + ' RSH issuing command: >' + _command + '<'
         output = execSshRemote(hostname, username, identityFileFullPath, password, command)
     else :
         output = execSshRemoteUsrPwd(hostname, username, password, command)
@@ -38,10 +39,10 @@ def setParameterValue(env, servername, username, passwordOrIdFileFullPath, fileV
 
     print 'On Server :' + servername + ' applying ->' + targetValue + '<- to ' + strToFind + ' at file Vector Vector ->' + fileVector + '<- ...'
     try:
-            command = "source ~/.bash_profile 2>/dev/null; sed -i -- 's/" + strToFind + "/" + targetValue + "/g'" + fileVector + "'"
+            command = "sed -i -- 's/" + strToFind + "/" + targetValue + "/g'" + fileVector + "'"
             rshCommand(env, servername, username, passwordOrIdFileFullPath, command)
             
-            command = "source ~/.bash_profile 2>/dev/null; grep -ia '"+ targetValue + "'" + " '" + fileVector + "'"
+            command = "grep -ia '"+ targetValue + "'" + " '" + fileVector + "'"
             rshCommand(env, servername, username, passwordOrIdFileFullPath, command)
     finally:
         None
