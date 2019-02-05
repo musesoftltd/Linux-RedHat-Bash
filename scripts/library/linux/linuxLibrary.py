@@ -38,10 +38,10 @@ def setParameterValue(env, servername, username, passwordOrIdFileFullPath, fileV
 
     print 'On Server :' + servername + ' applying ->' + targetValue + '<- to ' + strToFind + ' at file Vector Vector ->' + fileVector + '<- ...'
     try:
-            command = "source ~/.bash_profile 2>/dev/null; sed -i -- 's/" + strToFind + "/" + targetValue + "/g'" + fileVector + "'"
+            command = "sed -i -- 's/" + strToFind + "/" + targetValue + "/g'" + fileVector + "'"
             rshCommand(env, servername, username, passwordOrIdFileFullPath, command)
             
-            command = "source ~/.bash_profile 2>/dev/null; grep -ia '"+ targetValue + "'" + " '" + fileVector + "'"
+            command = "grep -ia '"+ targetValue + "'" + " '" + fileVector + "'"
             rshCommand(env, servername, username, passwordOrIdFileFullPath, command)
     finally:
         None
