@@ -10,6 +10,7 @@ from library.util import execSshRemote, execSshRemoteUsrPwd
 def rshCommand(env, hostname, username, identityFileFullPath, password, _command):
     command = _command
     
+    print 'On Server :' + hostname + ' RSH issuing command: >' + _command + '<'
     if (String(identityFileFullPath).contains(':') or String(identityFileFullPath).contains('\\') or String(identityFileFullPath).contains('/')) :
         output = execSshRemote(hostname, username, identityFileFullPath, password, command)
     else :
