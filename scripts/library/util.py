@@ -229,7 +229,7 @@ def gatherThreads(strThreadPoolId):
     for t in localThreadsList:
         t.join()
 
-def execSshRemote(hostname, username, identityFileFullPath, identityPassword, commandsSemiColonSeperated):
+def execSshRemote(hostname, username, identityFileFullPath, identityPassword, commandsSemiColonSeperated, sessionTimeoutSecs = 0):
     _hostname = hostname
     _username = username
     _identityPassword = identityPassword
@@ -246,8 +246,8 @@ def execSshRemote(hostname, username, identityFileFullPath, identityPassword, co
     config.put("PreferredAuthentications", "publickey");
     session.setConfig(config);
  
-    # session.setTimeout(100)
-    
+    if (sessionTimeoutSecs > 0) : session.setTimeout(sessionTimeoutSecs * 10)
+
     print 'Logging into Remote SSH Shell key Auth...'    
  
     try:
@@ -259,7 +259,7 @@ def execSshRemote(hostname, username, identityFileFullPath, identityPassword, co
     channel.setCommand('source ~/.bash_profile 2>/dev/null; ' + _command)
  
     outputBuffer = StringBuilder();
-    
+
     stdin = channel.getInputStream();
     stdinExt = channel.getExtInputStream();
  
@@ -295,7 +295,7 @@ def execSshRemote(hostname, username, identityFileFullPath, identityPassword, co
     return outputBuffer.toString()
 
 # https://stackoverflow.com/questions/18835756/how-do-i-authenticate-programmatically-using-jsch
-def execSshRemoteUsrPwd(hostname, username, password, commandsSemiColonSeperated):
+def execSshRemoteUsrPwd(hostname, username, password, commandsSemiColonSeperated, sessionTimeoutSecs = 0):
     _hostname = hostname
     _username = username 
     _password = password
@@ -312,8 +312,7 @@ def execSshRemoteUsrPwd(hostname, username, password, commandsSemiColonSeperated
     #config.put("PreferredAuthentications", "publickey");
     session.setConfig(config);
     
-    # session.setTimeout(100)
-    
+    if (sessionTimeoutSecs > 0) : session.setTimeout(sessionTimeoutSecs * 10)
     print 'Logging into Remote SSH Shell u/p Auth...'
     
     try:
@@ -353,6 +352,9 @@ def execSshRemoteUsrPwd(hostname, username, password, commandsSemiColonSeperated
         else :
             outputBuffer.append(chr(n))
  
+    print "Command on: " + hostname + " : " + _command
+    print "\toutput: " + outputBuffer.toString()
+
     channel.disconnect();
  
     return outputBuffer.toString()
