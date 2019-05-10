@@ -10,6 +10,7 @@ import os
 import re
 from string import split
 from threading import Thread
+from time import sleep
 
 from com.jcraft.jsch import JSch
 
@@ -142,54 +143,6 @@ def sanitizeJDBCCliVector(cliVector):
 
     return newCliVector
 
-def extractDatasourceName(cliVector):
-    dsName = regularExpressionSearch("/subsystem=datasources/data-source=(.*)", cliVector)
-
-    if (str(dsName).startswith("/subsystem=datasources")) :
-        return ""
-
-    splitExpression = split(dsName, "/", -1)
-    newDSName = ""
-    subExpressionCount = 1
-    if (len(splitExpression) > 1) :
-        for subExpression in splitExpression :
-            if (subExpressionCount == 1) and (str(dsName).startswith("jdbc/")) :
-                newDSName = newDSName + subExpression + '\/'
-            elif (subExpressionCount < len(splitExpression) -1) :
-                newDSName = newDSName + subExpression + '/'
-            else :
-                newDSName = newDSName + subExpression
-                
-            subExpressionCount = subExpressionCount + 1
-    else :
-        newDSName = splitExpression[0]
-
-    return newDSName
-
-def extractXADatasourceName(cliVector):
-    dsName = regularExpressionSearch("/subsystem=datasources/xa-data-source=(.*)", cliVector)
-
-    if (str(dsName).startswith("/subsystem=datasources")) :
-        return ""
-
-    splitExpression = split(dsName, "/", -1)
-    newDSName = ""
-    subExpressionCount = 1
-    if (len(splitExpression) > 1) :
-        for subExpression in splitExpression :
-            if (subExpressionCount == 1) and (str(dsName).startswith("jdbc/")) :
-                newDSName = newDSName + subExpression + '\/'
-            elif (subExpressionCount < len(splitExpression) -1) :
-                newDSName = newDSName + subExpression + '/'
-            else :
-                newDSName = newDSName + subExpression
-                
-            subExpressionCount = subExpressionCount + 1
-    else :
-        newDSName = splitExpression[0]
-
-    return newDSName
-
 def findReplaceIntoNewFile(stringToFind, stringToSet, origFileName, destFileName):
     f1 = open(origFileName, 'r')
     f2 = open(destFileName, 'w')
@@ -229,7 +182,7 @@ def gatherThreads(strThreadPoolId):
     for t in localThreadsList:
         t.join()
 
-def execSshRemote(hostname, username, identityFileFullPath, identityPassword, commandsSemiColonSeperated, sessionTimeoutSecs = 0):
+def execSshRemote(hostname, username, identityFileFullPath, identityPassword, commandsSemiColonSeperated, sessionTimeoutSecs = 0, waitForOutput = True):
     _hostname = hostname
     _username = username
     _identityPassword = identityPassword
@@ -266,40 +219,45 @@ def execSshRemote(hostname, username, identityFileFullPath, identityPassword, co
     stdin = channel.getInputStream();
     stdinExt = channel.getExtInputStream();
  
-    channel.connect();
+    channel.connect(sessionTimeoutSecs * 1000);
  
-    while (1) :
-        n = stdin.read()
-        if n == -1:
-            break
-        if (chr(n) == '\n'):
-            outputBuffer.append('|')
-        elif (chr(n) == '\r'):
-            outputBuffer.append('|')
-        else :
-            outputBuffer.append(chr(n))
-
-    while (1) :
-        n = stdinExt.read()
-        if n == -1:
-            break
-        if (chr(n) == '\n'):
-            outputBuffer.append('|')
-        elif (chr(n) == '\r'):
-            outputBuffer.append('|')
-        else :
-            outputBuffer.append(chr(n))
-                    
+    if(waitForOutput == True):
+        while (1) :
+            n = stdin.read()
+            if n == -1:
+                break
+            if (chr(n) == '\n'):
+                outputBuffer.append('|')
+            elif (chr(n) == '\r'):
+                outputBuffer.append('|')
+            else :
+                outputBuffer.append(chr(n))
+    
+        while (1) :
+            n = stdinExt.read()
+            if n == -1:
+                break
+            if (chr(n) == '\n'):
+                outputBuffer.append('|')
+            elif (chr(n) == '\r'):
+                outputBuffer.append('|')
+            else :
+                outputBuffer.append(chr(n))
+    else :
+        sleep(sessionTimeoutSecs)
+                        
     print "Command on: " + hostname + " : " + _command
     print "\toutput: " + outputBuffer.toString()
     
-    channel.disconnect();
-    session.disconnect()    
+    channel.disconnect()
+    session.disconnect()
+    
+    del channel    
+    del session    
     
     return outputBuffer.toString()
 
-# https://stackoverflow.com/questions/18835756/how-do-i-authenticate-programmatically-using-jsch
-def execSshRemoteUsrPwd(hostname, username, password, commandsSemiColonSeperated, sessionTimeoutSecs = 0):
+def execSshRemoteUsrPwd(hostname, username, password, commandsSemiColonSeperated, sessionTimeoutSecs = 0, waitForOutput = True):
     _hostname = hostname
     _username = username 
     _password = password
@@ -338,31 +296,39 @@ def execSshRemoteUsrPwd(hostname, username, password, commandsSemiColonSeperated
     
     channel.connect(sessionTimeoutSecs * 1000);
             
-    while (1) :
-        n = stdin.read()
-        if n == -1:
-            break
-        if (chr(n) == '\n'):
-            outputBuffer.append('|')
-        elif (chr(n) == '\r'):
-            outputBuffer.append('|')
-        else :
-            outputBuffer.append(chr(n))
-    
-    while (1) :
-        n = stdinExt.read()
-        if n == -1:
-            break
-        if (chr(n) == '\n'):
-            outputBuffer.append('|')
-        elif (chr(n) == '\r'):
-            outputBuffer.append('|')
-        else :
-            outputBuffer.append(chr(n))
+    if(waitForOutput == True):
+        while (1) :
+            n = stdin.read()
+            if n == -1:
+                break
+            if (chr(n) == '\n'):
+                outputBuffer.append('|')
+            elif (chr(n) == '\r'):
+                outputBuffer.append('|')
+            else :
+                outputBuffer.append(chr(n))
+        
+        while (1) :
+            n = stdinExt.read()
+            if n == -1:
+                break
+            if (chr(n) == '\n'):
+                outputBuffer.append('|')
+            elif (chr(n) == '\r'):
+                outputBuffer.append('|')
+            else :
+                outputBuffer.append(chr(n))
  
+    else :
+        sleep(sessionTimeoutSecs)
+        
     print "Command on: " + hostname + " : " + _command
     print "\toutput: " + outputBuffer.toString()
 
-    channel.disconnect();
- 
+    channel.disconnect()
+    session.disconnect()
+
+    del channel
+    del session    
+        
     return outputBuffer.toString()
