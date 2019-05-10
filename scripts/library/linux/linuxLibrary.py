@@ -39,7 +39,7 @@ def setParameterValue(env, servername, username, passwordOrIdFileFullPath, fileV
 
     print 'On Server :' + servername + ' applying ->' + targetValue + '<- to ' + strToFind + ' at file Vector Vector ->' + fileVector + '<- ...'
     try:
-            command = "sed -i -- 's/" + strToFind + "/" + targetValue + "/g'" + fileVector + "'"
+            command = "sed -i -- 's/" + strToFind + "/" + targetValue + "/g' " + fileVector + "'"
             rshCommand(env, servername, username, passwordOrIdFileFullPath, command)
             
             command = "grep -ia '"+ targetValue + "'" + " '" + fileVector + "'"
