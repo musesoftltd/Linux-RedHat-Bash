@@ -35,17 +35,17 @@ def getParameterValue(env, servername, username, idendityFileFullPath, idendityF
     
     return currentValue 
 
-def setParameterValue(env, servername, username, passwordOrIdFileFullPath, fileVector, strToFind, targetValue, reloadServerIfRequired=False) : 
+def setParameterValue(env, servername, username, passwordOrIdFileFullPath, password, fileVector, strToFind, targetValue, reloadServerIfRequired=False) : 
 
-    print 'On Server :' + servername + ' applying ->' + targetValue + '<- to ' + strToFind + ' at file Vector Vector ->' + fileVector + '<- ...'
+    print 'On Server :' + servername + ' applying ->' + targetValue + '<- to ->' + strToFind + '<- at file Vector ->' + fileVector + '<- ...'
     try:
-            command = "sed -i -- 's/" + strToFind + "/" + targetValue + "/g' " + fileVector + "'"
-            rshCommand(env, servername, username, passwordOrIdFileFullPath, command)
+            command = "sed -i -- s/" + strToFind + "/" + targetValue + "/g '" + fileVector + "'"
+            rshCommand(env, servername, username, passwordOrIdFileFullPath, password, command)
             
             command = "grep -ia '"+ targetValue + "'" + " '" + fileVector + "'"
-            rshCommand(env, servername, username, passwordOrIdFileFullPath, command)
+            rshCommand(env, servername, username, passwordOrIdFileFullPath, password, command)
     finally:
         None
     
-    print 'On Server :' + servername + ' applying ->' + targetValue + '<- to ' + strToFind + ' at file Vector Vector ->' + fileVector + '<- ...end.'
+    print 'On Server :' + servername + ' applying ->' + targetValue + '<- to ->' + strToFind + '<- at file Vector Vector ->' + fileVector + '<- ...end.'
     return True 
