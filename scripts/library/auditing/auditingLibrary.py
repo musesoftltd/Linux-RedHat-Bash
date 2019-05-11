@@ -271,12 +271,9 @@ class auditObjectAtomCompleteAnAction():
         self.returnResult = self.audit(servername, username, identityUserOrFileFullPath, password)
 
     def auditWriteAudit(self):
-        targetValue = ""
-        currentValue = ""
-
         passFailRecord = 'Success'
 
-        appendToAudit('Env:' + strEnvironment + ' : ' + self.servername + ',' + passFailRecord + ',' + self.auditTitle + ',current:"' + currentValue + '\n')
+        appendToAudit('Env:' + strEnvironment + ' : ' + self.servername + ',' + passFailRecord + ',' + self.auditTitle + ',current:"' + self.currentValue + '"\n')
 
     def audit(self, servername, username, identityFileFullPath, password):
         print 'On Server: ' + servername + ' Auditing : ' + self.auditTitle + '...'
