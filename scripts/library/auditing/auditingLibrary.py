@@ -151,6 +151,9 @@ class auditObjectAtom():
 
     def __init__(self, servername, username, identityUserOrFileFullPath, password, auditTitle, fileVector, strToFind, targetValue, bApplyTargetValue):
         self.servername = servername
+        self.username = username
+        self.password = password
+        self.identityUserOrFileFullPath = identityUserOrFileFullPath
         self.auditTitle = auditTitle
         self.fileVector = fileVector
         self.strToFind = str(strToFind)
@@ -158,10 +161,10 @@ class auditObjectAtom():
 
         self.auditPassed = False
 
-        self.returnResult = self.audit(servername, username, identityUserOrFileFullPath, password)
+        self.returnResult = self.audit(self.servername, self.username, self.identityUserOrFileFullPath, self.password)
         if ((self.auditPassed == False) & (bApplyTargetValue)):
             self.applyTargetValue()
-            self.audit(servername, username, identityUserOrFileFullPath, password)
+            self.audit(self.servername, self.username, self.identityUserOrFileFullPath, self.password)
 
     def auditWriteAudit(self):
         targetValue = ""
@@ -186,7 +189,7 @@ class auditObjectAtom():
 
     def applyTargetValue(self):
         print 'On Server: ' + self.servername + ' Applying : ' + self.auditTitle + '...'
-        result = setParameterValue(currentAuditReportEnvironment, self.servername, self.username, self.password, self.fileVector, self.strToFind, self.targetValue)
+        result = setParameterValue(currentAuditReportEnvironment, self.servername, self.username, self.identityFileFullPath, self.password, self.fileVector, self.strToFind, self.targetValue)
         if (result == True) :
             self.auditPassed = result
         else:
@@ -200,7 +203,11 @@ class auditObjectAtom():
 
     def audit(self, servername, username, identityFileFullPath, password):
         print 'On Server: ' + servername + ' Auditing : ' + self.auditTitle + '...'
-        self.currentValue = getParameterValue(currentAuditReportEnvironment, servername, username, identityFileFullPath, password, self.fileVector, self.strToFind)
+        self.currentValue = getParameterValue(currentAuditReportEnvironment, self.servername, self.username, self.identityFileFullPath, self.password, self.fileVector, self.strToFind)
+        if not(self.currentValue in self.targetValue) :
+            self.applyTargetValue()
+            self.currentValue = getParameterValue(currentAuditReportEnvironment, self.servername, self.username, self.identityFileFullPath, self.password, self.fileVector, self.targetValue)        
+                    
         self.auditResult = self.currentValue
         print 'Target Value: ' + self.targetValue
         print 'Actual Value: ' + self.currentValue
@@ -280,9 +287,6 @@ class auditObjectAtomCompleteAnAction():
         self.currentValue = rshCommand(currentAuditReportEnvironment, servername, username, identityFileFullPath, password, self.command)
         self.auditResult = self.currentValue
         print 'Actual Value: ' + self.currentValue
-        # This is a hack because we use \" to set some values
-        # But they will come back on read without \", so the compare fails
-        # although the values are the same
         self.auditPassed = True
 
         self.auditWriteAudit()
