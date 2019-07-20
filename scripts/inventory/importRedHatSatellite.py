@@ -8,10 +8,10 @@ class hostEntry:
     hostname = ""
     environment = ""
     type = ""
-    def __init__(self, hostname, environment, type):
+    def __init__(self, hostname, environment, serverType):
         self.hostname = hostname
         self.environment = environment
-        self.type = type 
+        self.type = serverType 
 
 # e.g. pullSatteliteExportIntoInventoryMultiEnvironment('./mySatExport.csv', 'pyInventory.py', 1, 7, 6, ['myExclude1', 'myExclude2'])    
 def pullSatelliteExportIntoInventoryMultiEnvironment(csvInputFile, inventoryPythonOutputFile, columnOfHostnames, columnOfEnvironments, columnOfServerType, excludesList):
