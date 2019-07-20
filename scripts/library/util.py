@@ -45,7 +45,20 @@ def stripCTRLChars(stringToStrip):
             newString = newString + char
  
     return newString
+
+def stripDashChars(stringToStrip):
+    newString = ''
  
+    for char in stringToStrip:
+        if (char == '-'):
+            newString = newString + '_'
+        if (char == ' '):
+            newString = newString + '_'
+        else :
+            newString = newString + char
+ 
+    return newString
+  
 def checkThenAddQuotes(stringToCheck):
     newString = stringToCheck
 

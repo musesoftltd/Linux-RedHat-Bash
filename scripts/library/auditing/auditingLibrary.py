@@ -161,10 +161,10 @@ class auditObjectAtom():
 
         self.auditPassed = False
 
-        self.returnResult = self.audit(self.servername, self.username, self.identityUserOrFileFullPath, self.password)
+        self.returnResult = self.audit()
         if ((self.auditPassed == False) & (bApplyTargetValue)):
             self.applyTargetValue()
-            self.audit(self.servername, self.username, self.identityUserOrFileFullPath, self.password)
+            self.audit()
 
     def auditWriteAudit(self):
         targetValue = ""
@@ -201,8 +201,8 @@ class auditObjectAtom():
 
         return self.auditResult
 
-    def audit(self, servername, username, identityFileFullPath, password):
-        print 'On Server: ' + servername + ' Auditing : ' + self.auditTitle + '...'
+    def audit(self):
+        print 'On Server: ' + self.servername + ' Auditing : ' + self.auditTitle + '...'
         self.currentValue = getParameterValue(currentAuditReportEnvironment, self.servername, self.username, self.identityFileFullPath, self.password, self.fileVector, self.strToFind)
         if not(self.targetValue in self.currentValue) :
             self.applyTargetValue()
@@ -231,7 +231,7 @@ class auditObjectAtom():
 
         self.auditWriteAudit()
 
-        print 'On Server: ' + servername + ' Auditing : ' + self.auditTitle + '...end.'
+        print 'On Server: ' + self.servername + ' Auditing : ' + self.auditTitle + '...end.'
 
         print '\n'
 
@@ -275,23 +275,23 @@ class auditObjectAtomCompleteAnAction():
         self.auditTitle = auditTitle
         self.auditPassed = False
         self.command = command
-        self.returnResult = self.audit(servername, username, identityUserOrFileFullPath, password)
+        self.returnResult = self.audit()
 
     def auditWriteAudit(self):
         passFailRecord = 'Success'
 
         appendToAudit('Env:' + strEnvironment + ' : ' + self.servername + ',' + passFailRecord + ',' + self.auditTitle + ',current:"' + self.currentValue + '"\n')
 
-    def audit(self, servername, username, identityFileFullPath, password):
-        print 'On Server: ' + servername + ' Auditing : ' + self.auditTitle + '...'
-        self.currentValue = rshCommand(currentAuditReportEnvironment, servername, username, identityFileFullPath, password, self.command)
+    def audit(self):
+        print 'On Server: ' + self.servername + ' Auditing : ' + self.auditTitle + '...'
+        self.currentValue = rshCommand(currentAuditReportEnvironment, self.servername, self.username, self.identityFileFullPath, self.password, self.command)
         self.auditResult = self.currentValue
         print 'Actual Value: ' + self.currentValue
         self.auditPassed = True
 
         self.auditWriteAudit()
 
-        print 'On Server: ' + servername + ' Auditing : ' + self.auditTitle + '...end.'
+        print 'On Server: ' + self.servername + ' Auditing : ' + self.auditTitle + '...end.'
 
         print '\n'
 

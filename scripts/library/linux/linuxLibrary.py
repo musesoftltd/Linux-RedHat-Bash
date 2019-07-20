@@ -47,5 +47,5 @@ def setParameterValue(env, servername, username, passwordOrIdFileFullPath, passw
     finally:
         None
     
-    print 'On Server :' + servername + ' applying ->' + targetValue + '<- to ->' + strToFind + '<- at file Vector Vector ->' + fileVector + '<- ...end.'
+    print 'On Server :' + servername + ' applying ->' + targetValue + '<- to ->' + strToFind + '<- at file Vector ->' + fileVector + '<- ...end.'
     return True 

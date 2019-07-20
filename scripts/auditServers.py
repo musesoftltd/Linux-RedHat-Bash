@@ -23,5 +23,6 @@ def auditServers(environment, servers, propertiesDict, bApplyRequiredChanges) :
         # auditServersBaseAudit(environment, servers, propertiesDict, bApplyRequiredChanges)
     
     gatherThreads("auditServersBaseAudit")
+
     for servername in servers:    
         auditReport(environment, servername)
