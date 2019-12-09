@@ -4,16 +4,16 @@ Created on 14 Oct 2016
 @author: ...
 '''
 import errno
-from java.lang import StringBuilder
-from java.util import Properties
 import os
 import re
 from string import split
 from threading import Thread
 from time import sleep
+from tokenize import String
 
+from java.lang import StringBuilder
+from java.util import Properties
 from com.jcraft.jsch import JSch
-
 
 scatterGatherThreadPool = []
 
@@ -30,6 +30,27 @@ def stripQuotes(stringToStrip):
 
     if (stringToStrip.startswith("\'")) and (stringToStrip.endswith("\'")) :
         newString = stringToStrip[1:-1]
+
+    return newString
+
+def stripNonChars(stringToStrip):
+    newString = ""
+
+    for char in stringToStrip:
+        if (char == '\n'):
+            newString = newString + '_'
+        elif (char == '\\'):
+            newString = newString + '_'
+        elif (char == '/'):
+            newString = newString + '_'
+        elif (char == ' '):
+            newString = newString + '_'
+        elif (char == '.'):
+            newString = newString + '_'
+        else :
+            newString = newString + char
+ 
+    return newString
 
     return newString
 
@@ -227,7 +248,7 @@ def execSshRemote(hostname, username, identityFileFullPath, identityPassword, co
     channel = session.openChannel("exec")
     channel.setCommand('source ~/.bash_profile 2>/dev/null; ' + _command)
  
-    outputBuffer = StringBuilder();
+    outputBuffer = String();
 
     stdin = channel.getInputStream();
     stdinExt = channel.getExtInputStream();
@@ -302,7 +323,7 @@ def execSshRemoteUsrPwd(hostname, username, password, commandsSemiColonSeperated
     channel = session.openChannel("exec")
     channel.setCommand('source ~/.bash_profile 2>/dev/null; ' + _command)
     
-    outputBuffer = StringBuilder();
+    outputBuffer = String();
     
     stdin = channel.getInputStream();
     stdinExt = channel.getExtInputStream();
