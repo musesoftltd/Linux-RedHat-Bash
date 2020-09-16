@@ -9,7 +9,6 @@ from library.auditing import auditingLibrary
 from library.auditing.auditServerBase import auditServersBaseAudit
 from library.auditing.auditingLibrary import auditInitAudit, auditReport
 from linuxProperties import linuxPropertiesDict
-from auditServers import auditServers
 
 def completeChecks(env, serverList, propertiesDict, bApplyRequiredChanges):
     # merge global propertiesDict into dict - deliberately overwriting local with global dict all values
