@@ -5,11 +5,11 @@ Created on 11 Oct 2017
 '''
 import datetime
 
-from linuxProperties import linuxPropertiesDict
-
 from library.auditing.auditServerBase import auditServersBaseAudit
 from library.auditing.auditingLibrary import auditInitAudit, auditReport
 from library.mdm.auditServerMDM import auditServersMdm
+from linuxProperties import linuxPropertiesDict
+from library.auditing import auditingLibrary
 
 def completeChecksMdm(env, serverList, propertiesDict, bApplyRequiredChanges):
     # merge global propertiesDict into dict - deliberately overwriting local with global dict all values
