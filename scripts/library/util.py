@@ -281,7 +281,7 @@ def execSshRemote(hostname, username, identityFileFullPath, identityPassword, co
         sleep(sessionTimeoutSecs)
                         
     print "Command on: " + hostname + " : " + _command
-    print "\toutput: " + outputBuffer.toString()
+    print "\toutput: " + outputBuffer
     
     channel.disconnect()
     session.disconnect()
@@ -357,7 +357,7 @@ def execSshRemoteUsrPwd(hostname, username, password, commandsSemiColonSeperated
         sleep(sessionTimeoutSecs)
         
     print "Command on: " + hostname + " : " + _command
-    print "\toutput: " + outputBuffer.toString()
+    print "\toutput: " + outputBuffer
 
     channel.disconnect()
     session.disconnect()
