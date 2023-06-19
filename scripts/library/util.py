@@ -289,7 +289,7 @@ def execSshRemote(hostname, username, identityFileFullPath, identityPassword, co
     del channel    
     del session    
     
-    return outputBuffer.toString()
+    return outputBuffer
 
 def execSshRemoteUsrPwd(hostname, username, password, commandsSemiColonSeperated, sessionTimeoutSecs = 0, waitForOutput = True):
     _hostname = hostname
@@ -365,4 +365,4 @@ def execSshRemoteUsrPwd(hostname, username, password, commandsSemiColonSeperated
     del channel
     del session    
         
-    return outputBuffer.toString()
+    return outputBuffer
