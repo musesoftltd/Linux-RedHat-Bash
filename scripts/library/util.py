@@ -248,12 +248,12 @@ def execSshRemote(hostname, username, identityFileFullPath, identityPassword, co
     channel = session.openChannel("exec")
     channel.setCommand('source ~/.bash_profile 2>/dev/null; ' + _command)
  
-    outputBuffer = String();
+    outputBuffer = ""
 
-    stdin = channel.getInputStream();
-    stdinExt = channel.getExtInputStream();
+    stdin = channel.getInputStream()
+    stdinExt = channel.getExtInputStream()
  
-    channel.connect(sessionTimeoutSecs * 1000);
+    channel.connect(sessionTimeoutSecs * 1000)
  
     if(waitForOutput == True):
         while (1) :
@@ -261,22 +261,22 @@ def execSshRemote(hostname, username, identityFileFullPath, identityPassword, co
             if n == -1:
                 break
             if (chr(n) == '\n'):
-                outputBuffer.append('|')
+                outputBuffer = outputBuffer + ('|')
             elif (chr(n) == '\r'):
-                outputBuffer.append('|')
+                outputBuffer = outputBuffer + ('|')
             else :
-                outputBuffer.append(chr(n))
+                outputBuffer = outputBuffer + (chr(n))
     
         while (1) :
             n = stdinExt.read()
             if n == -1:
                 break
             if (chr(n) == '\n'):
-                outputBuffer.append('|')
+                outputBuffer = outputBuffer + ('|')
             elif (chr(n) == '\r'):
-                outputBuffer.append('|')
+                outputBuffer = outputBuffer + ('|')
             else :
-                outputBuffer.append(chr(n))
+                outputBuffer = outputBuffer + (chr(n))
     else :
         sleep(sessionTimeoutSecs)
                         
@@ -323,12 +323,12 @@ def execSshRemoteUsrPwd(hostname, username, password, commandsSemiColonSeperated
     channel = session.openChannel("exec")
     channel.setCommand('source ~/.bash_profile 2>/dev/null; ' + _command)
     
-    outputBuffer = String();
+    outputBuffer = ""
     
-    stdin = channel.getInputStream();
-    stdinExt = channel.getExtInputStream();
+    stdin = channel.getInputStream()
+    stdinExt = channel.getExtInputStream()
     
-    channel.connect(sessionTimeoutSecs * 1000);
+    channel.connect(sessionTimeoutSecs * 1000)
             
     if(waitForOutput == True):
         while (1) :
@@ -336,22 +336,22 @@ def execSshRemoteUsrPwd(hostname, username, password, commandsSemiColonSeperated
             if n == -1:
                 break
             if (chr(n) == '\n'):
-                outputBuffer.append('|')
+                outputBuffer = outputBuffer + ('|')
             elif (chr(n) == '\r'):
-                outputBuffer.append('|')
+                outputBuffer = outputBuffer + ('|')
             else :
-                outputBuffer.append(chr(n))
+                outputBuffer = outputBuffer + (chr(n))
         
         while (1) :
             n = stdinExt.read()
             if n == -1:
                 break
             if (chr(n) == '\n'):
-                outputBuffer.append('|')
+                outputBuffer = outputBuffer + ('|')
             elif (chr(n) == '\r'):
-                outputBuffer.append('|')
+                outputBuffer = outputBuffer + ('|')
             else :
-                outputBuffer.append(chr(n))
+                outputBuffer = outputBuffer + (chr(n))
  
     else :
         sleep(sessionTimeoutSecs)

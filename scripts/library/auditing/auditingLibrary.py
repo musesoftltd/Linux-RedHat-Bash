@@ -275,6 +275,9 @@ class auditObjectAtomCompleteAnAction():
         self.auditTitle = auditTitle
         self.auditPassed = False
         self.command = command
+        self.username = username
+        self.password = password
+        
         self.returnResult = self.audit()
 
     def auditWriteAudit(self):
