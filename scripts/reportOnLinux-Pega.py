@@ -21,7 +21,7 @@ def completeChecksPega(env, serverList, propertiesDict, bApplyRequiredChanges):
     for servername in serverList :
         auditServersPega(env, servername, runtimeProperties["usernamePega"], propertiesDict, bApplyRequiredChanges)
 
-        auditingLibrary.auditObjectAtoms.append(auditingLibrary.auditObjectAtomCompleteAnAction(servername, runtimeProperties["usernamePega"], runtimeProperties["identityFileFullPath"], runtimeProperties["identityFilePassword"], 'JVM Mem Opts', 'source ~/.bash_profile; grep -ia \'Xmx\' \'/opt/jboss/EAP-6.4.0/bin/standalone.conf\''))
+        auditingLibrary.auditObjectAtoms.append(auditingLibrary.auditObjectAtomCompleteAnAction(servername, runtimeProperties["usernamePega"], runtimeProperties["identityFileFullPath"], runtimeProperties["password"], 'JVM Mem Opts', 'source ~/.bash_profile; grep -ia \'Xmx\' \'/opt/jboss/EAP-6.4.0/bin/standalone.conf\''))
     
         auditReport(env, servername)
 

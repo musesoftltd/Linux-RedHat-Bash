@@ -20,7 +20,7 @@ def completeChecksMdm(env, serverList, propertiesDict, bApplyRequiredChanges):
     for servername in serverList :
         auditServersMdm(env, servername, runtimeProperties["usernameMdm"], propertiesDict, bApplyRequiredChanges)
     
-        auditingLibrary.auditObjectAtoms.append(auditingLibrary.auditObjectAtomCompleteAnAction(servername, runtimeProperties["usernameMdm"], runtimeProperties["identityFileFullPath"], runtimeProperties["identityFilePassword"], 'JVM Mem Opts', 'source ~/.bash_profile; grep -ia \'Xmx\' \'/opt/install/EAP-6.4.0/bin/standalone.conf\''))
+        auditingLibrary.auditObjectAtoms.append(auditingLibrary.auditObjectAtomCompleteAnAction(servername, runtimeProperties["usernameMdm"], runtimeProperties["identityFileFullPath"], runtimeProperties["password"], 'JVM Mem Opts', 'source ~/.bash_profile; grep -ia \'Xmx\' \'/opt/install/EAP-6.4.0/bin/standalone.conf\''))
     
         auditReport(env, servername)
 

@@ -17,5 +17,5 @@ def auditServersMdm(environment, servername, username, propertiesDict, bApplyReq
 
     auditServersBaseAudit(environment, servername, username, propertiesDict, bApplyRequiredChanges)
     
-    auditObjectAtoms.append(auditObjectAtom(servername, username, runtimeProperties["identityFileFullPath"], runtimeProperties["identityFilePassword"], "MDM JGroups TCP", "/opt/install/infamdm/hub/server/resources/jgroups-tcp.xml", "jgroups.mping.mcast_port", "jgroups.mping.mcast_port", False))
-    auditObjectAtoms.append(auditObjectAtom(servername, username, runtimeProperties["identityFileFullPath"], runtimeProperties["identityFilePassword"], "MDM JGroups UDP", "/opt/install/infamdm/hub/server/resources/jgroups-udp.xml", "jgroups.udp.mcast_port", "jgroups.udp.mcast_port", False))
+    auditObjectAtoms.append(auditObjectAtom(servername, username, runtimeProperties["identityFileFullPath"], runtimeProperties["password"], "MDM JGroups TCP", "/opt/install/infamdm/hub/server/resources/jgroups-tcp.xml", "jgroups.mping.mcast_port", "jgroups.mping.mcast_port", False))
+    auditObjectAtoms.append(auditObjectAtom(servername, username, runtimeProperties["identityFileFullPath"], runtimeProperties["password"], "MDM JGroups UDP", "/opt/install/infamdm/hub/server/resources/jgroups-udp.xml", "jgroups.udp.mcast_port", "jgroups.udp.mcast_port", False))
