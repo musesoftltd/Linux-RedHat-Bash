@@ -19,8 +19,8 @@ def completeChecks(env, serverList, propertiesDict, bApplyRequiredChanges):
     for servername in serverList :
         auditServersBaseAudit(env, servername, runtimeProperties["username"], propertiesDict, bApplyRequiredChanges)
 
-        auditingLibrary.auditObjectAtoms.append(auditingLibrary.auditObjectAtomCompleteAnAction(servername, runtimeProperties["username"], runtimeProperties["identityFileFullPath"], runtimeProperties["password"], 'JVM Mem Opts', 'source ~/.bash_profile; grep -ia \'Xmx\' \'/opt/jboss/EAP-6.4.0/bin/standalone.conf\''))
-    
+        auditingLibrary.auditObjectAtoms.append(auditingLibrary.auditObjectAtomCompleteAnActionAuditAction(servername, runtimeProperties["username"], runtimeProperties["identityFileFullPath"], runtimeProperties["password"], 'ULimit', 'lsof | wc -l', '1024'))    
+
         auditReport(env, servername)
 
 bApplyRequiredChanges = False
