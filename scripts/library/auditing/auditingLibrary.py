@@ -351,6 +351,7 @@ class auditObjectAtomCompleteAnAction():
         self.command = command
         self.username = username
         self.password = password
+        self.identityFileFullPath = identityUserOrFileFullPath
         
         self.returnResult = self.audit()
 
