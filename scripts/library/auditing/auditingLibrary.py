@@ -128,6 +128,77 @@ class auditObjectMolecule:
 
         self.reportedAlready = True
 
+class auditObjectAtomCompleteAnActionAuditAction():
+    servername = ""
+    username = ""
+    password = ""
+    identityFileFullPath = ""
+ 
+    auditTitle = ""
+
+    fileVector = ""
+    strToFind = ""
+ 
+    currentValue = ""
+    targetValue = ""
+
+    auditPassed = False
+    auditResult = ""
+    
+    command = ""
+
+    titledAlready = False
+    reportedAlready = False
+
+    def __init__(self, servername, username, identityUserOrFileFullPath, password, auditTitle, command, grepFor):
+        self.servername = servername
+        self.auditTitle = auditTitle
+        self.auditPassed = False
+        self.command = command
+        self.username = username
+        self.password = password
+        self.targetValue = grepFor
+        
+        self.returnResult = self.audit()
+
+    def auditWriteAudit(self):
+        if self.auditPassed :
+          passFailRecord = 'Success'
+          
+        else:
+          passFailRecord = '*** FAIL ***'
+
+        appendToAudit('Env:' + strEnvironment + ' : ' + self.servername + ',' + passFailRecord + ',' + self.auditTitle + ',current:"' + self.currentValue + '"\n')
+
+    def audit(self):
+        print 'On Server: ' + self.servername + ' Auditing : ' + self.auditTitle + '...'
+        self.currentValue = rshCommand(currentAuditReportEnvironment, self.servername, self.username, self.identityFileFullPath, self.password, self.command)
+
+        self.auditResult = self.currentValue
+        print 'Actual Value: ' + self.currentValue
+        
+        if not(self.targetValue in self.currentValue) :
+          print 'Test Failed: ' + self.targetValue          
+          self.auditPassed = False
+          
+        else:
+          print 'Test Passed: ' + self.targetValue          
+          self.auditPassed = True
+
+        self.auditWriteAudit()
+
+        print 'On Server: ' + self.servername + ' Auditing : ' + self.auditTitle + '...end.'
+
+        print '\n'
+
+    def renderIntoReport(self):
+        if (self.currentValue == ''):
+            appendToReport("\"" + 'NOP' + '\"' + ',')
+        else :
+            appendToReport("\"" + stripCTRLChars(self.currentValue) + '\"' + ',')
+        self.reportedAlready = True;
+        
+
 # OO based auditing atom - automatically reported on
 class auditObjectAtom():
     servername = ""
