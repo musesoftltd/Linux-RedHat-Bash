@@ -157,6 +157,7 @@ class auditObjectAtomCompleteAnActionAuditAction():
         self.command = command
         self.username = username
         self.password = password
+        self.identityFileFullPath = identityUserOrFileFullPath
         self.targetValue = grepFor
         
         self.returnResult = self.audit()
