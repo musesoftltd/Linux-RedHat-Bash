@@ -194,8 +194,11 @@ class auditObjectAtomCompleteAnActionAuditAction():
     def renderIntoReport(self):
         if (self.currentValue == ''):
             appendToReport("\"" + 'NOP' + '\"' + ',')
+        elif self.auditPassed :
+            appendToReport("PASSED: \"" + stripCTRLChars(self.currentValue) + '\"' + ',')
         else :
-            appendToReport("\"" + stripCTRLChars(self.currentValue) + '\"' + ',')
+            appendToReport("*** FAILED ***: \"" + stripCTRLChars(self.currentValue) + '\"' + ',')
+                      
         self.reportedAlready = True;
         
 
