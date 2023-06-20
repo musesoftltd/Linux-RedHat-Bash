@@ -168,7 +168,7 @@ class auditObjectAtomCompleteAnActionAuditAction():
         else:
           passFailRecord = '*** FAIL ***'
 
-        appendToAudit('Env:' + strEnvironment + ' : ' + self.servername + ',' + passFailRecord + ',' + self.auditTitle + ',current:"' + self.currentValue + '"\n')
+        appendToAudit('Env:' + strEnvironment + ' : ' + self.servername + ',' + passFailRecord + ',' + self.auditTitle + ',current:"' + self.currentValue + ',target:"' + self.targetValue + '"\n')
 
     def audit(self):
         print 'On Server: ' + self.servername + ' Auditing : ' + self.auditTitle + '...'
@@ -178,11 +178,11 @@ class auditObjectAtomCompleteAnActionAuditAction():
         print 'Actual Value: ' + self.currentValue
         
         if not(self.targetValue in self.currentValue) :
-          print 'Test Failed: ' + self.targetValue          
+          print 'Test *** Failed *** : Current Value:' + self.currentValue + " | Target Value: " + self.targetValue          
           self.auditPassed = False
           
         else:
-          print 'Test Passed: ' + self.targetValue          
+          print 'Test Passed: Current Value:' + self.currentValue + " | Target Value: " + self.targetValue          
           self.auditPassed = True
 
         self.auditWriteAudit()
@@ -195,9 +195,9 @@ class auditObjectAtomCompleteAnActionAuditAction():
         if (self.currentValue == ''):
             appendToReport("\"" + 'NOP' + '\"' + ',')
         elif self.auditPassed :
-            appendToReport("PASSED: \"" + stripCTRLChars(self.currentValue) + '\"' + ',')
+            appendToReport("PASSED: current:\"" + stripCTRLChars(self.currentValue) + '\"' + ' | target:\"' + stripCTRLChars(self.targetValue) + '\"' + ',')
         else :
-            appendToReport("*** FAILED ***: \"" + stripCTRLChars(self.currentValue) + '\"' + ',')
+            appendToReport("*** FAILED ***: current:\"" + stripCTRLChars(self.currentValue) + '\"' + ' | target:\"' + stripCTRLChars(self.targetValue) + '\"' + ',')
                       
         self.reportedAlready = True;
         
