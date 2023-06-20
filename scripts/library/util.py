@@ -248,12 +248,12 @@ def execSshRemote(hostname, username, identityFileFullPath, identityPassword, co
     channel = session.openChannel("exec")
     channel.setCommand('source ~/.bash_profile 2>/dev/null; ' + _command)
  
-    outputBuffer = String();
+    outputBuffer = ""
 
-    stdin = channel.getInputStream();
-    stdinExt = channel.getExtInputStream();
+    stdin = channel.getInputStream()
+    stdinExt = channel.getExtInputStream()
  
-    channel.connect(sessionTimeoutSecs * 1000);
+    channel.connect(sessionTimeoutSecs * 1000)
  
     if(waitForOutput == True):
         while (1) :
@@ -261,27 +261,27 @@ def execSshRemote(hostname, username, identityFileFullPath, identityPassword, co
             if n == -1:
                 break
             if (chr(n) == '\n'):
-                outputBuffer.append('|')
+                outputBuffer = outputBuffer + ('|')
             elif (chr(n) == '\r'):
-                outputBuffer.append('|')
+                outputBuffer = outputBuffer + ('|')
             else :
-                outputBuffer.append(chr(n))
+                outputBuffer = outputBuffer + (chr(n))
     
         while (1) :
             n = stdinExt.read()
             if n == -1:
                 break
             if (chr(n) == '\n'):
-                outputBuffer.append('|')
+                outputBuffer = outputBuffer + ('|')
             elif (chr(n) == '\r'):
-                outputBuffer.append('|')
+                outputBuffer = outputBuffer + ('|')
             else :
-                outputBuffer.append(chr(n))
+                outputBuffer = outputBuffer + (chr(n))
     else :
         sleep(sessionTimeoutSecs)
                         
     print "Command on: " + hostname + " : " + _command
-    print "\toutput: " + outputBuffer.toString()
+    print "\toutput: " + outputBuffer
     
     channel.disconnect()
     session.disconnect()
@@ -289,7 +289,7 @@ def execSshRemote(hostname, username, identityFileFullPath, identityPassword, co
     del channel    
     del session    
     
-    return outputBuffer.toString()
+    return outputBuffer
 
 def execSshRemoteUsrPwd(hostname, username, password, commandsSemiColonSeperated, sessionTimeoutSecs = 0, waitForOutput = True):
     _hostname = hostname
@@ -323,12 +323,12 @@ def execSshRemoteUsrPwd(hostname, username, password, commandsSemiColonSeperated
     channel = session.openChannel("exec")
     channel.setCommand('source ~/.bash_profile 2>/dev/null; ' + _command)
     
-    outputBuffer = String();
+    outputBuffer = ""
     
-    stdin = channel.getInputStream();
-    stdinExt = channel.getExtInputStream();
+    stdin = channel.getInputStream()
+    stdinExt = channel.getExtInputStream()
     
-    channel.connect(sessionTimeoutSecs * 1000);
+    channel.connect(sessionTimeoutSecs * 1000)
             
     if(waitForOutput == True):
         while (1) :
@@ -336,28 +336,28 @@ def execSshRemoteUsrPwd(hostname, username, password, commandsSemiColonSeperated
             if n == -1:
                 break
             if (chr(n) == '\n'):
-                outputBuffer.append('|')
+                outputBuffer = outputBuffer + ('|')
             elif (chr(n) == '\r'):
-                outputBuffer.append('|')
+                outputBuffer = outputBuffer + ('|')
             else :
-                outputBuffer.append(chr(n))
+                outputBuffer = outputBuffer + (chr(n))
         
         while (1) :
             n = stdinExt.read()
             if n == -1:
                 break
             if (chr(n) == '\n'):
-                outputBuffer.append('|')
+                outputBuffer = outputBuffer + ('|')
             elif (chr(n) == '\r'):
-                outputBuffer.append('|')
+                outputBuffer = outputBuffer + ('|')
             else :
-                outputBuffer.append(chr(n))
+                outputBuffer = outputBuffer + (chr(n))
  
     else :
         sleep(sessionTimeoutSecs)
         
     print "Command on: " + hostname + " : " + _command
-    print "\toutput: " + outputBuffer.toString()
+    print "\toutput: " + outputBuffer
 
     channel.disconnect()
     session.disconnect()
@@ -365,4 +365,4 @@ def execSshRemoteUsrPwd(hostname, username, password, commandsSemiColonSeperated
     del channel
     del session    
         
-    return outputBuffer.toString()
+    return outputBuffer
