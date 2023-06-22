@@ -243,7 +243,7 @@ def execSshRemote(hostname, username, identityFileFullPath, identityPassword, co
         else:
             session.connect()            
     except:
-        return 'None'
+        return 'Failed to Connect'
  
     channel = session.openChannel("exec")
     channel.setCommand('source ~/.bash_profile 2>/dev/null; ' + _command)
@@ -318,7 +318,7 @@ def execSshRemoteUsrPwd(hostname, username, password, commandsSemiColonSeperated
         else:
             session.connect()            
     except:
-        return 'None'
+        return 'Failed to Connect'
     
     channel = session.openChannel("exec")
     channel.setCommand('source ~/.bash_profile 2>/dev/null; ' + _command)
