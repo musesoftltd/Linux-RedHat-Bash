@@ -7,13 +7,16 @@ import errno
 import os
 import re
 from string import split
+import sys
 from threading import Thread
 from time import sleep
 from tokenize import String
+import traceback
 
+from com.jcraft.jsch import JSch
 from java.lang import StringBuilder
 from java.util import Properties
-from com.jcraft.jsch import JSch
+
 
 scatterGatherThreadPool = []
 
@@ -216,16 +219,12 @@ def gatherThreads(strThreadPoolId):
     for t in localThreadsList:
         t.join()
 
-def execSshRemote(hostname, username, identityFileFullPath, identityPassword, commandsSemiColonSeperated, sessionTimeoutSecs = 0, waitForOutput = True):
-    _hostname = hostname
-    _username = username
-    _identityPassword = identityPassword
-    _command = commandsSemiColonSeperated
- 
+def execSshRemote(hostname, username, identityFileFullPath, identityPassword, command, sessionTimeoutSecs = 0, waitForOutput = True):
+
     jsch = JSch()
-    jsch.addIdentity(identityFileFullPath, _identityPassword)
+    jsch.addIdentity(identityFileFullPath, identityPassword)
  
-    session = jsch.getSession(_username, _hostname, 22)
+    session = jsch.getSession(username, hostname, 22)
     config = Properties()
     config.put("StrictHostKeyChecking", "no")
     config.put("GSSAPIAuthentication", "no")
@@ -233,20 +232,31 @@ def execSshRemote(hostname, username, identityFileFullPath, identityPassword, co
     config.put("PreferredAuthentications", "publickey");
     session.setConfig(config);
  
-    if (sessionTimeoutSecs > 0) : session.setTimeout(sessionTimeoutSecs * 10)
-
     print 'Logging into Remote SSH Shell key Auth...'    
- 
+    
     try:
         if (sessionTimeoutSecs > 0) :
             session.connect(sessionTimeoutSecs * 1000)
         else:
-            session.connect()            
+            session.connect(100)            
     except:
+        # print "*** print_exception:"
+        # exc_type, exc_value, exc_traceback = sys.exc_info()
+        # traceback.print_exception(exc_type, exc_value, exc_traceback, limit=2, file=sys.stdout)
+        # return 'Failed to Connect'
+ 
+        exc_type, exc_value, exc_traceback = sys.exc_info()
+        print "*** print_tb:"
+        traceback.print_tb(exc_traceback, limit=1, file=sys.stdout)
+        print "*** print_exception:"
+        traceback.print_exception(exc_type, exc_value, exc_traceback, limit=2, file=sys.stdout)
+        print "*** format_exc, first and last line:"
+        formatted_lines = traceback.format_exc().splitlines()
+        
         return 'Failed to Connect'
  
     channel = session.openChannel("exec")
-    channel.setCommand('source ~/.bash_profile 2>/dev/null; ' + _command)
+    channel.setCommand('source ~/.bash_profile 2>/dev/null; ' + command)
  
     outputBuffer = ""
 
@@ -280,7 +290,7 @@ def execSshRemote(hostname, username, identityFileFullPath, identityPassword, co
     else :
         sleep(sessionTimeoutSecs)
                         
-    print "Command on: " + hostname + " : " + _command
+    print "Command on: " + hostname + " : " + command
     print "\toutput: " + outputBuffer
     
     channel.disconnect()
@@ -292,15 +302,11 @@ def execSshRemote(hostname, username, identityFileFullPath, identityPassword, co
     return outputBuffer
 
 def execSshRemoteUsrPwd(hostname, username, password, commandsSemiColonSeperated, sessionTimeoutSecs = 0, waitForOutput = True):
-    _hostname = hostname
-    _username = username 
-    _password = password
-    _command = commandsSemiColonSeperated
     
     jsch = JSch()
     
-    session = jsch.getSession(_username, _hostname, 22)
-    session.setPassword(_password);
+    session = jsch.getSession(username, hostname, 22)
+    session.setPassword(password);
     config = Properties()
     config.put("StrictHostKeyChecking", "no")
     config.put("GSSAPIAuthentication", "no")
@@ -318,10 +324,13 @@ def execSshRemoteUsrPwd(hostname, username, password, commandsSemiColonSeperated
         else:
             session.connect()            
     except:
+        print "*** print_exception:"
+        exc_type, exc_value, exc_traceback = sys.exc_info()
+        traceback.print_exception(exc_type, exc_value, exc_traceback, limit=2, file=sys.stdout)      
         return 'Failed to Connect'
     
     channel = session.openChannel("exec")
-    channel.setCommand('source ~/.bash_profile 2>/dev/null; ' + _command)
+    channel.setCommand('source ~/.bash_profile 2>/dev/null; ' + command)
     
     outputBuffer = ""
     
@@ -356,7 +365,7 @@ def execSshRemoteUsrPwd(hostname, username, password, commandsSemiColonSeperated
     else :
         sleep(sessionTimeoutSecs)
         
-    print "Command on: " + hostname + " : " + _command
+    print "Command on: " + hostname + " : " + command
     print "\toutput: " + outputBuffer
 
     channel.disconnect()
