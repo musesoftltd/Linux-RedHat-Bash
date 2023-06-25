@@ -238,7 +238,7 @@ def execSshRemote(hostname, username, identityFileFullPath, identityPassword, co
         if (sessionTimeoutSecs > 0) :
             session.connect(sessionTimeoutSecs * 1000)
         else:
-            session.connect(100)            
+            session.connect(200)            
     except:
         # print "*** print_exception:"
         # exc_type, exc_value, exc_traceback = sys.exc_info()
@@ -256,7 +256,7 @@ def execSshRemote(hostname, username, identityFileFullPath, identityPassword, co
         return 'Failed to Connect'
  
     channel = session.openChannel("exec")
-    channel.setCommand('source ~/.bash_profile 2>/dev/null; ' + command)
+    channel.setCommand(command)
  
     outputBuffer = ""
 
@@ -322,15 +322,25 @@ def execSshRemoteUsrPwd(hostname, username, password, command, sessionTimeoutSec
         if (sessionTimeoutSecs > 0) :
             session.connect(sessionTimeoutSecs * 1000)
         else:
-            session.connect()            
+            session.connect(200)            
     except:
-        print "*** print_exception:"
+        # print "*** print_exception:"
+        # exc_type, exc_value, exc_traceback = sys.exc_info()
+        # traceback.print_exception(exc_type, exc_value, exc_traceback, limit=2, file=sys.stdout)
+        # return 'Failed to Connect'
+ 
         exc_type, exc_value, exc_traceback = sys.exc_info()
-        traceback.print_exception(exc_type, exc_value, exc_traceback, limit=2, file=sys.stdout)      
+        print "*** print_tb:"
+        traceback.print_tb(exc_traceback, limit=1, file=sys.stdout)
+        print "*** print_exception:"
+        traceback.print_exception(exc_type, exc_value, exc_traceback, limit=2, file=sys.stdout)
+        print "*** format_exc, first and last line:"
+        formatted_lines = traceback.format_exc().splitlines()
+        
         return 'Failed to Connect'
     
     channel = session.openChannel("exec")
-    channel.setCommand('source ~/.bash_profile 2>/dev/null; ' + command)
+    channel.setCommand(command)
     
     outputBuffer = ""
     
