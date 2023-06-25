@@ -301,7 +301,7 @@ def execSshRemote(hostname, username, identityFileFullPath, identityPassword, co
     
     return outputBuffer
 
-def execSshRemoteUsrPwd(hostname, username, password, commandsSemiColonSeperated, sessionTimeoutSecs = 0, waitForOutput = True):
+def execSshRemoteUsrPwd(hostname, username, password, command, sessionTimeoutSecs = 0, waitForOutput = True):
     
     jsch = JSch()
     
