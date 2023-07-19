@@ -172,25 +172,25 @@ class auditObjectAtomCompleteAnActionAuditAction():
         appendToAudit('Env:' + strEnvironment + ' : ' + self.servername + ',' + passFailRecord + ',' + self.auditTitle + ',current:"' + self.currentValue + ',target:"' + self.targetValue + '"\n')
 
     def audit(self):
-        print 'On Server: ' + self.servername + ' Auditing : ' + self.auditTitle + '...'
+        print ('On Server: ' + self.servername + ' Auditing : ' + self.auditTitle + '...')
         self.currentValue = rshCommand(currentAuditReportEnvironment, self.servername, self.username, self.identityFileFullPath, self.password, self.command)
 
         self.auditResult = self.currentValue
-        print 'Actual Value: ' + self.currentValue
+        print ('Actual Value: ') + self.currentValue
         
         if not(self.targetValue in self.currentValue) :
-          print 'Test *** Failed *** : Current Value:' + self.currentValue + " | Target Value: " + self.targetValue          
+          print ('Test *** Failed *** : Current Value:') + self.currentValue + " | Target Value: " + self.targetValue          
           self.auditPassed = False
           
         else:
-          print 'Test Passed: Current Value:' + self.currentValue + " | Target Value: " + self.targetValue          
+          print ('Test Passed: Current Value:') + self.currentValue + " | Target Value: " + self.targetValue          
           self.auditPassed = True
 
         self.auditWriteAudit()
 
-        print 'On Server: ' + self.servername + ' Auditing : ' + self.auditTitle + '...end.'
+        print ('On Server: ' + self.servername + ' Auditing : ' + self.auditTitle + '...end.')
 
-        print '\n'
+        print ('\n')
 
     def renderIntoReport(self):
         if (self.currentValue == ''):
@@ -263,52 +263,52 @@ class auditObjectAtom():
         appendToAudit('Env:' + strEnvironment + ' : ' + self.servername + ',' + passFailRecord + ',' + self.auditTitle + ',current:"' + currentValue + '",target:"' + targetValue + '"\n')
 
     def applyTargetValue(self):
-        print 'On Server: ' + self.servername + ' Applying : ' + self.auditTitle + '...'
+        print ('On Server: ' + self.servername + ' Applying : ' + self.auditTitle + '...')
         result = setParameterValue(currentAuditReportEnvironment, self.servername, self.username, self.identityFileFullPath, self.password, self.fileVector, self.strToFind, self.targetValue)
         if (result == True) :
             self.auditPassed = result
         else:
             self.auditPassed = False
             self.auditResult = "Unknown"
-            print 'Setting value: ' + self.targetValue + ' ' + self.auditTitle + ' for server: ' + self.servername + '...FAILED'
+            print ('Setting value: ' + self.targetValue + ' ' + self.auditTitle + ' for server: ' + self.servername + '...FAILED')
 
-        print 'On Server: ' + self.servername + ' Applying : ' + self.auditTitle + '...end.'
+        print ('On Server: ' + self.servername + ' Applying : ' + self.auditTitle + '...end.')
 
         return self.auditResult
 
     def audit(self):
-        print 'On Server: ' + self.servername + ' Auditing : ' + self.auditTitle + '...'
+        print ('On Server: ' + self.servername + ' Auditing : ' + self.auditTitle + '...')
         self.currentValue = getParameterValue(currentAuditReportEnvironment, self.servername, self.username, self.identityFileFullPath, self.password, self.fileVector, self.strToFind)
         if not(self.targetValue in self.currentValue) :
             self.applyTargetValue()
             self.currentValue = getParameterValue(currentAuditReportEnvironment, self.servername, self.username, self.identityFileFullPath, self.password, self.fileVector, self.targetValue)        
                     
         self.auditResult = self.currentValue
-        print 'Target Value: ' + self.targetValue
-        print 'Actual Value: ' + self.currentValue
+        print ('Target Value: ') + self.targetValue
+        print ('Actual Value: ') + self.currentValue
         # This is a hack because we use \" to set some values
         # But they will come back on read without \", so the compare fails
         # although the values are the same
         if (self.targetValue.isdigit()) :
             if (self.targetValue == self.currentValue):
-                print 'Auditing: ' + self.auditTitle + '...Passed.'
+                print ('Auditing: ' + self.auditTitle + '...Passed.')
                 self.auditPassed = True
             else:
-                print 'Auditing: ' + self.auditTitle + '...FAILED.'
+                print ('Auditing: ' + self.auditTitle + '...FAILED.')
                 self.auditPassed = False
         else :
             if (stripQuotes(self.targetValue) in self.currentValue):
-                print 'Auditing: ' + self.auditTitle + '...Passed.'
+                print ('Auditing: ' + self.auditTitle + '...Passed.')
                 self.auditPassed = True
             else:
-                print 'Auditing: ' + self.auditTitle + '...FAILED.'
+                print ('Auditing: ' + self.auditTitle + '...FAILED.')
                 self.auditPassed = False
 
         self.auditWriteAudit()
 
-        print 'On Server: ' + self.servername + ' Auditing : ' + self.auditTitle + '...end.'
+        print ('On Server: ' + self.servername + ' Auditing : ' + self.auditTitle + '...end.')
 
-        print '\n'
+        print ('\n')
 
     def renderIntoReport(self):
         if not(self.reportedAlready) :
@@ -362,17 +362,17 @@ class auditObjectAtomCompleteAnAction():
         appendToAudit('Env:' + strEnvironment + ' : ' + self.servername + ',' + passFailRecord + ',' + self.auditTitle + ',current:"' + self.currentValue + '"\n')
 
     def audit(self):
-        print 'On Server: ' + self.servername + ' Auditing : ' + self.auditTitle + '...'
+        print ('On Server: ' + self.servername + ' Auditing : ' + self.auditTitle + '...')
         self.currentValue = rshCommand(currentAuditReportEnvironment, self.servername, self.username, self.identityFileFullPath, self.password, self.command)
         self.auditResult = self.currentValue
-        print 'Actual Value: ' + self.currentValue
+        print ('Actual Value: ') + self.currentValue
         self.auditPassed = True
 
         self.auditWriteAudit()
 
-        print 'On Server: ' + self.servername + ' Auditing : ' + self.auditTitle + '...end.'
+        print ('On Server: ' + self.servername + ' Auditing : ' + self.auditTitle + '...end.')
 
-        print '\n'
+        print ('\n')
 
     def renderIntoReport(self):
         if (self.currentValue == ''):
@@ -410,7 +410,7 @@ def auditReport(environment, currentServerName):
     global strEnvironment
     global strTechnologyType
 
-    print 'auditReport for server : ' + currentServerName + ' in environment : ' + environment + '...'
+    print ('auditReport for server : ' + currentServerName + ' in environment : ' + environment + '...')
 
     ############################################################################
     # HEADING of Report...
@@ -463,4 +463,4 @@ def auditReport(environment, currentServerName):
     currentAuditReportServer = currentServerName
     currentAuditReportEnvironment = environment
  
-    print 'auditReport for server : ' + currentServerName + ' in environment : ' + environment + '...end.'
+    print ('auditReport for server : ' + currentServerName + ' in environment : ' + environment + '...end.')

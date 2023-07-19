@@ -235,7 +235,7 @@ def execSshRemote(hostname, username, identityFileFullPath, identityPassword, co
  
     if (sessionTimeoutSecs > 0) : session.setTimeout(sessionTimeoutSecs * 10)
 
-    print 'Logging into Remote SSH Shell key Auth...'    
+    print ('Logging into Remote SSH Shell key Auth...')    
  
     try:
         if (sessionTimeoutSecs > 0) :
@@ -310,7 +310,7 @@ def execSshRemoteUsrPwd(hostname, username, password, commandsSemiColonSeperated
     
     if (sessionTimeoutSecs > 0) : session.setTimeout(sessionTimeoutSecs * 10)
 
-    print 'Logging into Remote SSH Shell u/p Auth...'
+    print ('Logging into Remote SSH Shell u/p Auth...')
     
     try:
         if (sessionTimeoutSecs > 0) :
